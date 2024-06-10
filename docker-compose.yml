@@ -63,8 +63,8 @@ services:
   
   go2climb-mq:
     image: rabbitmq:management
-    container_name: Newsletter.RabbitMq
-    hostname: newsletter-mq
+    container_name: go2climb.RabbitMq
+    hostname: go2climb-mq
     volumes:
         - ./.containers/queue/data/:/var/lib/rabbitmq
         - ./.containers/queee/log/:/var/log/rabbitmq
