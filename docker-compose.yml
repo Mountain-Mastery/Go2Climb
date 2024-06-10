@@ -1,0 +1,60 @@
+version: '3.4'
+
+services:
+  activity.api:
+    image: ${DOCKER_REGISTRY-}activityapi
+    build:
+      context: .
+      dockerfile: Activity.API/Dockerfile
+    ports:
+        - 5001:443
+
+  agency.api:
+    image: ${DOCKER_REGISTRY-}agencyapi
+    build:
+      context: .
+      dockerfile: Agency.API/Dockerfile
+    ports:
+        - 5002:443
+
+  customer.api:
+    image: ${DOCKER_REGISTRY-}customerapi
+    build:
+      context: .
+      dockerfile: Customer.API/Dockerfile
+    ports:
+        - 5003:443
+      
+  report.api:
+    image: ${DOCKER_REGISTRY-}reportapi
+    build:
+      context: .
+      dockerfile: Report.API/Dockerfile
+    ports:
+        - 5004:443
+
+  service.api:
+    image: ${DOCKER_REGISTRY-}serviceapi
+    build:
+      context: .
+      dockerfile: Service.API/Dockerfile
+    ports:
+        - 5005:443
+
+  subscription.api:
+    image: ${DOCKER_REGISTRY-}subscriptionapi
+    build:
+      context: .
+      dockerfile: Subscription.API/Dockerfile
+    ports:
+        - 5006:443
+
+  go2climb.db:
+    image: postgres
+    container_name: go2climb.db
+    environment:
+        - POSTGRES_DB=go2climb
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=password
+    ports:
+        - 5432:5432
