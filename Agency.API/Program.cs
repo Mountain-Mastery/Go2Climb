@@ -3,6 +3,12 @@ using FluentValidation;
 using MassTransit;
 using Agency.API.Database;
 using Agency.API.Extentions;
+using Agency.API.Domain.Models;
+using Agency.API.Domain.Repository;
+using Agency.API.Domain.Services;
+using Agency.API.Repositories;
+using Agency.API.Services;
+using Agency.API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +23,11 @@ var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(conf => conf.RegisterServicesFromAssembly(assembly));
 
 builder.Services.AddValidatorsFromAssembly(assembly);
+
+builder.Services.AddScoped<IAgencyRepository, AgencyRepository>();
+builder.Services.AddScoped<IAgencyService, AgencyService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMassTransit(config =>
 {
@@ -46,6 +57,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/weatherforecast", () => "Hello");
+app.AddAgencyEndpoints();
 
 app.Run();
