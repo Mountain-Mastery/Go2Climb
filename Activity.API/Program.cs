@@ -1,8 +1,14 @@
-using Activity.API.Database;
-using Activity.API.Extentions;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using MassTransit;
+using Activity.API.Database;
+using Activity.API.Extentions;
+using Activity.API.Domain.Models;
+using Activity.API.Domain.Repository;
+using Activity.API.Domain.Services;
+using Activity.API.Repositories;
+using Activity.API.Services;
+using Activity.API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +23,11 @@ var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(conf => conf.RegisterServicesFromAssembly(assembly));
 
 builder.Services.AddValidatorsFromAssembly(assembly);
+
+builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMassTransit(config =>
 {
@@ -46,6 +57,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/weatherforecast", () => "Hello");
+app.AddActivityEndpoints();
 
 app.Run();
